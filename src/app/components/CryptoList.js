@@ -1,49 +1,67 @@
-import React from 'react'
-import styles from "@/app/styles/cryptolist.module.css"
+"use client"
+import React, { useState, useEffect } from 'react';
+import styles from "@/app/styles/cryptolist.module.css";
 import CoinCard from './CoinCard';
-const CryptoList = async () => {
+import { useMyContext } from '../context';
 
-    const url = 'https://coinranking1.p.rapidapi.com/coins';
-    var coindata;
+const CryptoList = () => {
+    const { selectedCoin, setSelectedCoin, coindata } = useMyContext();
 
-    const options = {
-        method: 'GET',
+    const [searchTerm, setSearchTerm] = useState('');
+    const [filteredCoins, setFilteredCoins] = useState([]);
 
-        params: {
-            referenceCurrencyUuid: 'yhjMzLPhuIDl',
-            timePeriod: '24h',
-            'tiers[0]': '1',
-            orderBy: 'marketCap',
-            orderDirection: 'desc',
-            limit: '50',
-            offset: '0'
-        },
-        headers: {
-            'X-RapidAPI-Key': '74972a32d8msh5ac31f15f5cbe13p1ec771jsn9f081d9e603b',
-            'X-RapidAPI-Host': 'coinranking1.p.rapidapi.com'
+    useEffect(() => {
+        setFilteredCoins(coindata);
+    }, [coindata]);
+
+    useEffect(() => {
+        if (coindata.length > 0) {
+            setSelectedCoin(coindata[0]);
         }
+    }, [coindata, setSelectedCoin]);
+
+    const handleCardClick = (coin) => {
+        setSelectedCoin(coin);
     };
 
-    try {
-        const res = await fetch(url, options);
-        const data = await res.json()
-        coindata = data?.data?.coins;
-    } catch (error) {
-        console.log(error);
-    }
+    const handleInputChange = (event) => {
+        const { value } = event.target;
+        setSearchTerm(value);
+        filterCoins(value);
+    };
+
+    const filterCoins = (searchTerm) => {
+        const filtered = coindata.filter((coin) =>
+            coin.name.toLowerCase().includes(searchTerm.toLowerCase()) || coin.symbol.toLowerCase().includes(searchTerm.toLowerCase())
+        );
+        setFilteredCoins(filtered);
+    };
 
     return (
-
         <>
             <div className={styles.list}>
+                <div >
+                    <input
+                        className={styles.searchbar}
+                        type="text"
+                        placeholder="Search for a coin..."
+                        value={searchTerm}
+                        onChange={handleInputChange}
+                    />
+                </div>
                 {
-                    coindata?.map((coin)=>{
-                       return  <CoinCard data={coin} key={coin?.uuid} />
-                    })
+                    filteredCoins.map((coin) => (
+                        <CoinCard
+                            key={coin.uuid}
+                            data={coin}
+                            isSelected={coin === selectedCoin}
+                            onClick={() => handleCardClick(coin)}
+                        />
+                    ))
                 }
             </div>
         </>
     )
 }
 
-export default CryptoList
+export default CryptoList;

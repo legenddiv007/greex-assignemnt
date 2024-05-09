@@ -1,12 +1,19 @@
 import React from 'react'
 import CryptoList from './components/CryptoList'
+import CandleStickChart from './components/CandlestickChart';
+import styles from '@/app/styles/pages.module.css'
+import { MyProvider } from './context';
 
-const page = () => {
+const page = async () => {
+
   return (
     <>
-      <div className='main-container'>
-        <CryptoList/>
-      </div>
+      <MyProvider>
+        <div className={styles.mainContainer}>
+          <CryptoList />
+          <CandleStickChart />
+        </div>
+      </MyProvider>
     </>
   )
 }

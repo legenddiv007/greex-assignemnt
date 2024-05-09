@@ -1,5 +1,5 @@
 .coinCard{
-    width: 250px;
+    width: 80%;
     height: 100px;
     background-color: rgba(255, 255, 255, 0.1);
     backdrop-filter: blur(5px);
@@ -19,10 +19,20 @@
     font-weight: bold;
     margin-top: 5px;
 }
-
+.leftSide{
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    align-items: flex-start;
+}
 .rightSide{
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
+.selected {
+    outline: 2px solid blue;
+    background-color: blue;
+    color: white;
+}
