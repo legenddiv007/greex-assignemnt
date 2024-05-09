@@ -3,6 +3,7 @@ import CryptoList from '../components/CryptoList'
 import CandleStickChart from '../components/CandlestickChart'
 import { MyProvider } from '../context'
 import styles from '@/app/styles/pages.module.css'
+import Navbar from '../components/Navbar'
 
 
 const page = async () => {
@@ -10,9 +11,14 @@ const page = async () => {
   return (
     <>
       <MyProvider>
+      <div className={styles.navbar}><Navbar/></div>
         <div className={styles.mainContainer}>
-          <CryptoList />
-          <CandleStickChart />
+          <div>
+            <CryptoList />
+          </div>
+          <div className={styles.chart}>
+            <CandleStickChart />
+          </div>
         </div>
       </MyProvider>
     </>

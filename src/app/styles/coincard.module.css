@@ -1,7 +1,7 @@
 .coinCard{
     width: 80%;
     height: 100px;
-    background-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(#333, #222);
     backdrop-filter: blur(5px);
     color: black;
     padding: 10px;
@@ -11,9 +11,14 @@
     color: white;
     display: flex;
     justify-content: space-between;
+    
 }
 
-
+@media only screen and (max-width: 960px) {
+    .coinCard {
+        width: 90%;
+    }
+  }
 
 .coinName{
     font-weight: bold;
@@ -34,6 +39,6 @@
 
 .selected {
     outline: 2px solid greenyellow;
-    background-color: rgba(255, 255, 255, 0.1);
+    background: linear-gradient(#333933, #222922);
     color: white;
 }

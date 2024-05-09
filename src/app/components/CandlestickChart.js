@@ -50,6 +50,8 @@ const CandleStickChart = () => {
             type: 'candlestick',
             background: '#2b2b2b',
             foreColor: '#ccc',
+            height: '100%',
+            width:'100%'
         },
         xaxis: {
             type: 'datetime',
@@ -87,8 +89,8 @@ const CandleStickChart = () => {
     };
 
     return (
-        <div className={styles.chart}>
-            <ReactApexChart options={options} series={[{ data: transformedData }]} type="candlestick" />
+        <div className={styles.chart} >
+            <ReactApexChart options={options} series={[{ data: transformedData }]} type="candlestick" style={{ height: '100vh' }} />
         </div>
     );
 };
