@@ -3,7 +3,7 @@ import dbConnect from "@/utils/dbConn";
 import User from "../../../../models/userModel";
 import { NextResponse } from "next/server";
 
-const SALT_ROUNDS = 10; 
+const SALT_ROUNDS = 10;
 
 export async function POST(req, res) {
     try {
@@ -13,14 +13,20 @@ export async function POST(req, res) {
         if (!username || !email || !password || !confirmpassword) {
             return NextResponse.json(
                 { error: "Username, email, and password are required" },
-                { status: 400 }
+                { status: 400 },
+                { msg: "Username, email, and password are required" },
+
             );
         }
 
-        if(password!==confirmpassword){
+        if (password !== confirmpassword) {
             return NextResponse.json(
-                {error: "Password and confirm password should be same"},
-                { status: 400 }
+                {
+                    error: "Password and confirm password should be same",
+                    msg: "Password and confirm password should be same"
+                },
+                { status: 400 },
+
             )
         }
 
@@ -30,8 +36,12 @@ export async function POST(req, res) {
         const existingUser = await User.findOne({ email });
         if (existingUser) {
             return NextResponse.json(
-                { error: "User with this email already exists" },
-                { status: 400 }
+                {
+                    error: "User with this email already exists",
+                    msg: "User with this email already exists"
+                },
+                { status: 400 },
+
             );
         }
 
@@ -39,7 +49,7 @@ export async function POST(req, res) {
         const hashedPassword = await bcrypt.hash(password, SALT_ROUNDS);
 
 
-       
+
         await User.create({ username, email, password: hashedPassword });
 
         return NextResponse.json(
@@ -49,7 +59,10 @@ export async function POST(req, res) {
     } catch (error) {
         console.error("Signup error:", error);
         return NextResponse.json(
-            { error: "Server error, please try again" },
+            {
+                error: "Server error, please try again",
+                msg: "Server error, please try again"
+            },
             { status: 500 }
         );
     }

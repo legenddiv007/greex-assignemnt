@@ -3,7 +3,7 @@ import React, { useState } from 'react';
 import styles from '@/app/styles/loginsignup.module.css';
 import { useRouter } from 'next/navigation';
 import Cookies from "js-cookie";
-
+import toast from 'react-hot-toast';
 
 const useForm = (initialState, submitCallback) => {
 
@@ -20,7 +20,9 @@ const useForm = (initialState, submitCallback) => {
         try {
             const response = await submitCallback(formData);
             setStatus(response.status === 200 ? 'success' : 'error');
+            
         } catch (error) {
+            toast.error("error")
             console.error(error);
             setStatus('error');
         }
@@ -44,6 +46,7 @@ const LoginForm = ({ flipForm,router }) => {
         });
 
        if(response.status==200) { 
+        toast.success("Login successful!"); 
         Cookies.set("loggedin", "true");
         router.push('/home')}
         return response;
@@ -73,16 +76,24 @@ const SignupForm = ({ flipForm,router}) => {
         username: '',
         email: '',
         password: '',
-        confirmPassword: ''
+        confirmpassword: ''
     }, submitSignup);
 
     async function submitSignup(formData) {
-        const response = await fetch('/api/signup', {
-            method: 'POST',
-            headers: { "Content_Type": "application/json" },
-            body: JSON.stringify(formData)
-        });
-        return response;
+        try {
+            const response = await fetch('/api/signup', {
+                method: 'POST',
+                headers: { "Content_Type": "application/json" },
+                body: JSON.stringify(formData)
+            });
+            if(response.status==200) { 
+                Cookies.set("loggedin", "true");
+                toast.success("SignUp successful!"); 
+                router.push('/home')}
+        } catch (error) {
+            toast.error(error.msg)
+        }
+       
     }
 
     return (
@@ -99,7 +110,7 @@ const SignupForm = ({ flipForm,router}) => {
                     <input type="password" placeholder="Password" name='password' required className={styles.inputbox} value={formData.password} onChange={handleChange} />
                 </div>
                 <div className={styles.field}>
-                    <input type="password" placeholder="Confirm Password" name='confirmPassword' required className={styles.inputbox} value={formData.confirmPassword} onChange={handleChange} />
+                    <input type="password" placeholder="Confirm Password" name='confirmpassword' required className={styles.inputbox} value={formData.confirmpassword} onChange={handleChange} />
                 </div>
                 <button type="submit" className={styles.btn}>SIGN UP</button>
                 <div className={styles.link}>

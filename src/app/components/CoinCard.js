@@ -17,9 +17,13 @@ const CoinCard = ({ data, isSelected, onClick }) => {
 
             <div
                 className={styles.rightSide}
-                style={{ color: data?.change?.startsWith('-') ? '#F44336' : '#4CAF50' }}
+
             >
-                {data?.change} %
+                <div style={{ color: data?.change?.startsWith('-') ? '#F44336' : '#4CAF50' }}>
+                    {data?.change} %
+                </div>
+                ${parseFloat(data?.price).toFixed(2)}
+
             </div>
         </div>
     );
