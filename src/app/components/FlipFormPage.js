@@ -19,20 +19,28 @@ const useForm = (initialState, submitCallback) => {
         e.preventDefault();
         try {
             const response = await submitCallback(formData);
-            setStatus(response.status === 200 ? 'success' : 'error');
-            
+            if (response.status === 200) {
+                const responseData = await response.json();
+                toast.success(responseData.msg || 'Operation successful');
+                setStatus('success');
+            } else {
+                const errorResponse = await response.json();
+                const errorMessage = errorResponse.error || 'An error occurred';
+                toast.error(errorMessage);
+                setStatus('error');
+            }
         } catch (error) {
-            toast.error("error")
-            console.error(error);
+            console.error('Error:', error);
+            toast.error('An error occurred. Please try again later.');
             setStatus('error');
         }
-    }
+    };
 
     return { formData, handleChange, handleSubmit, status };
 }
 
-const LoginForm = ({ flipForm,router }) => {
-   
+const LoginForm = ({ flipForm, router }) => {
+
     const { formData, handleChange, handleSubmit } = useForm({
         email: '',
         password: ''
@@ -45,10 +53,11 @@ const LoginForm = ({ flipForm,router }) => {
             body: JSON.stringify(formData)
         });
 
-       if(response.status==200) { 
-        toast.success("Login successful!"); 
-        Cookies.set("loggedin", "true");
-        router.push('/home')}
+        if (response.status == 200) {
+            toast.success("Login successful!");
+            Cookies.set("loggedin", "true");
+            router.push('/home')
+        }
         return response;
     }
 
@@ -71,7 +80,7 @@ const LoginForm = ({ flipForm,router }) => {
     );
 }
 
-const SignupForm = ({ flipForm,router}) => {
+const SignupForm = ({ flipForm, router }) => {
     const { formData, handleChange, handleSubmit } = useForm({
         username: '',
         email: '',
@@ -86,14 +95,15 @@ const SignupForm = ({ flipForm,router}) => {
                 headers: { "Content_Type": "application/json" },
                 body: JSON.stringify(formData)
             });
-            if(response.status==200) { 
+            if (response.status == 200) {
                 Cookies.set("loggedin", "true");
-                toast.success("SignUp successful!"); 
-                router.push('/home')}
+                toast.success("SignUp successful!");
+                router.push('/home')
+            }
         } catch (error) {
             toast.error(error.msg)
         }
-       
+
     }
 
     return (

@@ -14,8 +14,6 @@ export async function POST(req, res) {
             return NextResponse.json(
                 { error: "Username, email, and password are required" },
                 { status: 400 },
-                { msg: "Username, email, and password are required" },
-
             );
         }
 
@@ -37,8 +35,7 @@ export async function POST(req, res) {
         if (existingUser) {
             return NextResponse.json(
                 {
-                    error: "User with this email already exists",
-                    msg: "User with this email already exists"
+                    error: "User with this email already exists"
                 },
                 { status: 400 },
 
