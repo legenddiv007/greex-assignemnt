@@ -9,12 +9,19 @@ export async function POST(req, res) {
     try {
         const body = await req.json();
 
-        const { username, email, password } = body;
-        if (!username || !email || !password) {
+        const { username, email, password, confirmpassword } = body;
+        if (!username || !email || !password || !confirmpassword) {
             return NextResponse.json(
                 { error: "Username, email, and password are required" },
                 { status: 400 }
             );
+        }
+
+        if(password!==confirmpassword){
+            return NextResponse.json(
+                {error: "Password and confirm password should be same"},
+                { status: 400 }
+            )
         }
 
         await dbConnect();
@@ -36,7 +43,7 @@ export async function POST(req, res) {
         await User.create({ username, email, password: hashedPassword });
 
         return NextResponse.json(
-            { message: "Signup successful" },
+            { message: "Signup successful, LogIn Now" },
             { status: 200 }
         );
     } catch (error) {
