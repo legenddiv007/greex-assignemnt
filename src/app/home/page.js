@@ -1,28 +1,30 @@
-import React from 'react'
-import CryptoList from '../components/CryptoList'
-import CandleStickChart from '../components/CandlestickChart'
-import { MyProvider } from '../context'
-import styles from '@/app/styles/pages.module.css'
-import Navbar from '../components/Navbar'
+import React from 'react';
+import CryptoList from '../components/CryptoList';
+import dynamic from 'next/dynamic';
+import { MyProvider } from '../context';
+import styles from '@/app/styles/pages.module.css';
+import Navbar from '../components/Navbar';
 
+const DynamicCandleStickChart = dynamic(() => import('../components/CandlestickChart'), {
+  ssr: false
+});
 
-const page = async () => {
-
+const Page = () => {
   return (
     <>
       <MyProvider>
-      <div className={styles.navbar}><Navbar/></div>
+        <div className={styles.navbar}><Navbar/></div>
         <div className={styles.mainContainer}>
           <div>
             <CryptoList />
           </div>
           <div className={styles.chart}>
-            <CandleStickChart />
+            <DynamicCandleStickChart />
           </div>
         </div>
       </MyProvider>
     </>
-  )
-}
+  );
+};
 
-export default page
+export default Page;
