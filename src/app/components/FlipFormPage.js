@@ -2,6 +2,7 @@
 import React, { useState } from 'react';
 import styles from '@/app/styles/loginsignup.module.css';
 import { useRouter } from 'next/navigation';
+import Cookies from "js-cookie";
 
 
 const useForm = (initialState, submitCallback) => {
@@ -42,7 +43,9 @@ const LoginForm = ({ flipForm,router }) => {
             body: JSON.stringify(formData)
         });
 
-       if(response.status==200)  router.push('/home')
+       if(response.status==200) { 
+        Cookies.set("loggedin", "true");
+        router.push('/home')}
         return response;
     }
 

@@ -18,6 +18,8 @@ export async function POST(req, res) {
             );
         }
 
+        await dbConnect();
+
         const user = await User.findOne({ email });
         if (!user) {
             return NextResponse.json(
