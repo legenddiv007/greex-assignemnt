@@ -17,7 +17,8 @@
 
 .coinName{
     font-weight: bold;
-    margin-top: 5px;
+    margin-top: 15px;
+    font-size: small;
 }
 .leftSide{
     display: flex;
@@ -32,7 +33,7 @@
 }
 
 .selected {
-    outline: 2px solid blue;
-    background-color: blue;
+    outline: 2px solid greenyellow;
+    background-color: rgba(255, 255, 255, 0.1);
     color: white;
 }
